@@ -42,8 +42,6 @@ public class UserData
     }
     public static async Task<LoginDto> Login(LoginDto user)
     {
-        LoginDto NewUser = null;
-
         try
         {
             using (var connection = new SqlConnection(DataSettings.ConnectionString))
