@@ -15,9 +15,11 @@ public class LoginDto
         Password = password;
     }
 
-    [Required]
+    [Required(ErrorMessage = "Email Required")]
+    [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Password Required")]
+    [DataType(DataType.Password)]
     public string Password { get; set; }
-    
+
 }

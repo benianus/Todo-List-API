@@ -16,7 +16,7 @@ namespace Todo_List_API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetTasks([FromQuery] int page, [FromQuery] int limite)
+        public async Task<IActionResult> GetTasks([FromQuery] int page = 1, [FromQuery] int limite = 5)
         {
             if (!ModelState.IsValid)
             {
