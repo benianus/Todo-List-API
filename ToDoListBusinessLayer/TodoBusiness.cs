@@ -38,4 +38,9 @@ public class TodoBusiness
     {
         return await TodosData.DeleteTask(id);
     }
+
+    public static async Task<TodosDto> FilterTasks(string filter, int page, int limite)
+    {
+        return await TodosData.FilterTasks(filter, page, limite);
+    }
 }

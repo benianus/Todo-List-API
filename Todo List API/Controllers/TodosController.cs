@@ -8,7 +8,7 @@ namespace Todo_List_API.Controllers
 {
     [Route("api")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class TodosController : ControllerBase
     {
         [HttpGet("tasks")]

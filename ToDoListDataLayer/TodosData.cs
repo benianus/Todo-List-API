@@ -165,4 +165,40 @@ public class TodosData
 
         return rowsAffected > 0;
     }
+
+    public static async Task<TodosDto> FilterTasks(string filter, int page, int limite)
+    {
+        var tasks = new List<TaskDto>();
+
+        using (var connection = new SqlConnection(DataSettings.ConnectionString))
+        {
+            using (var command = new SqlCommand("Sp_FilterTasks", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@filter", filter); 
+                command.Parameters.AddWithValue("@page", page); 
+                command.Parameters.AddWithValue("@limite", limite); 
+
+                connection.Open();
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        tasks.Add(
+                            new TaskDto(
+                                reader.GetInt32(reader.GetOrdinal("Id")),
+                                reader.GetString(reader.GetOrdinal("Title")),
+                                reader.GetString(reader.GetOrdinal("Description")),
+                                reader.GetInt32(reader.GetOrdinal("UserId"))
+                            )   
+                        );
+                    }
+                }
+            }
+        }
+
+        return new TodosDto(tasks, page, limite);
+    }
 }
