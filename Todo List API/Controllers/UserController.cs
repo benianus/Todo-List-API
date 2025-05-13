@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using ToDoListBusinessLayer;
 using ToDoListDataLayer;
 using ToDoListDataLayer.Dtos;
-using ToDoListDataLayer.DTOs;
+//using ToDoListDataLayer.DTOs;
 using Microsoft.IdentityModel.JsonWebTokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 

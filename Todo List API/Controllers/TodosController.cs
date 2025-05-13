@@ -8,7 +8,7 @@ namespace Todo_List_API.Controllers
 {
     [Route("api")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TodosController : ControllerBase
     {
         [HttpGet("tasks")]
@@ -128,6 +128,31 @@ namespace Todo_List_API.Controllers
             }
 
             return Ok("Task Deleted Successfully");
+        }
+        [HttpGet("tasks/filter", Name = "filterTask")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> FilterTasks([FromQuery] string filter, [FromQuery] int page = 1, [FromQuery] int limite = 5)
+        {
+            var tasks = await TodoBusiness.FilterTasks(filter, page, limite);
+            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (tasks == null)
+            {
+                return NotFound("Tasks Not found");
+            }
+
+            return Ok(tasks);
         }
     }
 }
