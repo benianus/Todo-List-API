@@ -37,4 +37,9 @@ public class UserBusiness
     {
         return await UserData.Login(user);
     }
+
+    public static async Task<bool> SaveToken(string token, int userId)
+    {
+        return await UserData.SaveToken(token, userId);
+    }
 }

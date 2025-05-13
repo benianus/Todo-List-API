@@ -1,19 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoListBusinessLayer;
 using ToDoListDataLayer.Dtos;
 
 namespace Todo_List_API.Controllers
 {
-    [Route("api/tasks")]
+    [Route("api")]
     [ApiController]
+    [Authorize]
     public class TodosController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("tasks")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetTasks([FromQuery] int page = 1, [FromQuery] int limite = 5)
@@ -32,7 +35,7 @@ namespace Todo_List_API.Controllers
 
             return Ok(tasks);
         }
-        [HttpGet("{id}", Name = "gettaskbyid")]
+        [HttpGet("tasks/{id}", Name = "gettaskbyid")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,7 +58,7 @@ namespace Todo_List_API.Controllers
 
             return Ok(task);
         }
-        [HttpPost]
+        [HttpPost("tasks")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -77,7 +80,7 @@ namespace Todo_List_API.Controllers
 
             return CreatedAtRoute("gettaskbyid", new { id = newTask.Id }, newTask);
         }
-        [HttpPut("{id}", Name = "updateTask")]
+        [HttpPut("tasks/{id}", Name = "updateTask")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -101,12 +104,13 @@ namespace Todo_List_API.Controllers
 
             return Ok("Task Updated Successfully");
         }
-        [HttpDelete("{id}", Name = "deleteTask")]
+        [HttpDelete("tasks/{id}", Name = "deleteTask")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteTask([FromRoute] int id)

@@ -25,7 +25,7 @@ public class UserData
                     connection.Open();
 
                     object? result = await command.ExecuteScalarAsync();
-
+                                       
                     if (result != null & int.TryParse(result?.ToString(), out int insertedId))
                     {
                         userId = insertedId;
@@ -74,5 +74,33 @@ public class UserData
         }
 
         return null;
+    }
+
+    public static async Task<bool> SaveToken(string token, int userId)
+    {
+        int tokenId = 0;
+        using (var connection = new SqlConnection(DataSettings.ConnectionString))
+        {
+            using (var command = new SqlCommand("Sp_InsertToken", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@Token", token);   
+                command.Parameters.AddWithValue("@UserId", userId);   
+
+                connection.Open();
+
+                object? result = await command.ExecuteScalarAsync();
+
+                if (result != null)
+                {
+                    tokenId = Convert.ToInt32(result);
+                }
+            }
+
+            connection.Close();
+        }
+
+        return tokenId > 0;
     }
 }
